@@ -1,0 +1,346 @@
+/*user agent stylesheet を無効化する*/
+/*user agent stylesheetとは、各ブラウザがページを読み込むときに既定で適用されている、CSSのことです。*/
+/*参考：https://mebee.info/2019/08/21/user-agent-stylesheet/#outline__2*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+/*--------------------------------------------------------------------*/
+
+/* html要素 */
+html {
+    /*ルートの文字サイズを10pxに設定*/
+      /* フォントサイズ(rem用) 
+      ブラウザのデフォルトのフォントサイズは16pxで、font-sizeを62.5%と指定することで
+      pxにすると10pxとなるり、rem指定がしやすくなるため
+
+      デバイスごとにも設定できる
+      参考：https://engineer-labo.com/rem_size/
+      */
+      /*これを基準に150%とか倍率で指定していく*/
+    font-size: 62.5%;
+}
+
+
+/* bodyのフォントサイズを2.0em（20px）に設定 */
+body {
+
+  /*font-size: 2.0em;*/
+  font-size: clamp(1.6rem,2vw,2rem);
+  margin: 0;  /*自動生成余白を消す*/
+  
+}
+body {
+  font-family: Roboto,sans-serif!important; /*フォントスタイル*/
+  font-size: clamp(1.6rem,2vw,2rem);  /*フォントサイズ (最小,推奨,最大)*/
+  line-height: 1.4; /*行間調節*/
+}
+body {
+  /* ページ全体の背景色 */
+  background-color: rgb(230, 230, 230); /*背景色*/
+}
+
+
+/*祖親クラスの高さを指定(スクロールできるように)*/
+.g_test {
+  min-height: 2000px;
+}
+
+
+/*スマホの場合のフォントサイズを設定(横幅550px以下)*/
+/*
+rem親要素に応じて指定されるのではなく、文字サイズの指定に使うため1rem=10px未満になるとChromeが値を無効にしてしまいます。Chromeの独自処理なので、レスポンシブされない理由が分からず、初心者は煮詰まってしまう可能性があるので注意してください。
+
+remを使っているのに、スマホのChrome画面でレスポンシブが効かないときはremのサイズ指定が10pxになっていないか確認しましょう。
+参考：https://engineer-labo.com/rem_size/
+*/
+/* @media screen and (max-width: 550px) {
+  html{ */
+    /* 1rem = 10xと再定義 */
+    /*必ず10px以上に設定する！！*/
+    /* font-size: 10px;
+  } */
+
+  /* body{ */
+    /* （100px * 0.14rem = 14px） */
+    /* font-size: .7rem;
+  }
+} */
+
+
+
+
+/* 要素を見分けやすくするために背景色を設定 */
+.grid1[data-name="A"] {
+  background-color:rgb(255, 159, 159)
+}
+.grid1[data-name="B"] {
+  background-color:rgb(147, 224, 255)
+}
+.grid1[data-name="C"] {
+  background-color:rgb(223, 255, 79)
+}
+.grid1[data-name="D"] {
+  background-color:rgb(99, 255, 60)
+}
+.grid1[data-name="E"] {
+  background-color:rgb(250, 134, 247)
+}
+
+
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅1024px以上の場合*/
+@media screen and (min-width: 1024px) {
+
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 3;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+
+    grid-template-rows: 37rem min(28vw,37rem); /* 縦に2つ並べる*/
+                                    /*上の高さを、ルート文字37つ分に設定(今回は10pxなので370px)*/
+                                    /*下の最小(基本)高さを、ウィンドウ横幅の28%に設定(自動調整)
+                                    最大高さを上の高さと同じように、ルート文字37分に設定(これを超えて高くならない)*/
+  }
+
+
+
+  /*data-nameを付けると、その親要素のclass名で設定した内容より優先される(class名で設定したものの前に置いても)*/
+  /* class名:grid1 の data名:B は */
+  /* data名を指定して、グリッド領域を変更 */
+  .grid1[data-name="B"]{
+    --grid-column-start: auto;  /*要素描写開始位置(X軸)を指定*/
+    --grid-column-end: span 2;  /*要素描写開始位置(X軸)のグリッドスパン(セル)を指定*/
+    --grid-row-start: auto;     /*上で説明したY軸版*/
+    --grid-row-end: span 1;     /*上で説明したY軸版*/
+  }
+}/*終 ウィンドウ幅1024px以上の場合*/
+
+
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅856px以上、1023px以下の場合*/
+@media screen and (min-width: 856px) and (max-width: 1023px){
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 2;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+    
+    grid-auto-flow: dense;  /*要素を出来るだけ詰めて配置する(基本はデフォルトと同じ配置の仕方だけど、要素が配置されていないグリッド領域を埋めるために、順番が変わることもある)*/
+                            /*参考：https://learning.mihune-web.com/grid-auto-flow/ */
+
+
+
+    /*本来は要素内の文章でサイズが決まるので必要ないが、文章を入れていないので、一時的にサイズを設定*/
+    grid-template-rows: min(12rem) min(27rem) min(13.097rem); /* 縦に3つ並べる*/
+  }
+
+
+
+
+  /* data名を指定して、グリッド領域を変更 */
+  .grid1[data-name="B"]{
+    --grid-column-start: auto;  /*要素描写開始位置(X軸)を指定*/
+    --grid-column-end: span 2;  /*要素描写開始位置(X軸)のグリッドスパン(セル)を指定*/
+    --grid-row-start: auto;     /*上で説明したY軸版*/
+    --grid-row-end: span 1;     /*上で説明したY軸版*/
+  }
+
+
+}/*終 /*ウィンドウ幅856px以上、1023px以下の場合*/
+
+
+
+
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅700px以上、855px以下の場合*/
+@media screen and (min-width: 700px) and (max-width: 855px){
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 2;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+    
+    grid-auto-flow: dense;  /*要素を出来るだけ詰めて配置する(基本はデフォルトと同じ配置の仕方だけど、要素が配置されていないグリッド領域を埋めるために、順番が変わることもある)*/
+                            /*参考：https://learning.mihune-web.com/grid-auto-flow/ */
+
+
+
+    /*本来は要素内の文章でサイズが決まるので必要ないが、文章を入れていないので、一時的にサイズを設定*/
+    grid-template-rows: min(13.097rem) min(27rem) min(15.336rem); /* 縦に3つ並べる*/
+  }
+
+
+
+
+  /* data名を指定して、グリッド領域を変更 */
+  .grid1[data-name="B"]{
+    --grid-column-start: auto;  /*要素描写開始位置(X軸)を指定*/
+    --grid-column-end: span 2;  /*要素描写開始位置(X軸)のグリッドスパン(セル)を指定*/
+    --grid-row-start: auto;     /*上で説明したY軸版*/
+    --grid-row-end: span 1;     /*上で説明したY軸版*/
+  }
+
+
+}/*終 /*ウィンドウ幅700px以上、855px以下の場合*/
+
+
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅668px以上、699px以下の場合*/
+@media screen and (min-width: 668px) and (max-width: 699px){
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 1;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+
+    grid-template-rows: min(12rem) min(100vw,63rem) min(15vw,10rem) min(15vw,10rem) min(15vw,10rem); /* 縦に5つ並べる*/
+  }
+
+
+
+
+
+  /*親要素のグリッドサイズ(高さ)は子要素で決まるようにしてあるので、一時的に決めておく*/
+  /*要素のサイズ指定*/
+  .grid1{
+    width: auto;
+
+  }
+}/*終 ウィンドウ幅668px以上、699px以下の場合*/
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅500px以上、667px未満の場合*/
+@media screen and (min-width: 500px) and (max-width: 667px){
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 1;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+
+    grid-template-rows: min(9.3391rem) min(100vw,63rem) min(15vw,10rem) min(15vw,10rem) min(15vw,10rem); /* 縦に5つ並べる*/
+  }
+
+
+
+
+
+  /*親要素のグリッドサイズ(高さ)は子要素で決まるようにしてあるので、一時的に決めておく*/
+  /*要素のサイズ指定*/
+  .grid1{
+    width: auto;
+
+  }
+}/*終 ウィンドウ幅500px以上、667px未満の場合*/
+
+
+
+
+/*グリッド作成*/
+/*ウィンドウ幅500px以下*/
+@media screen and (max-width: 500px){
+  /*親要素*/
+  .g_wrap {
+    /*grid-template-columns: repeat(繰り返す回数, 内容) の繰り返す回数 と 内容 に使用する変数*/
+    --tate_kazu: 1;     /*繰り返す回数*/
+    --tate_naiyo: 1fr;  /*内容*/
+
+    grid-template-rows: 100vw 130vw 100vw 100vw 100vw ; /* 縦に3つ並べる*/
+  }
+
+
+
+
+
+
+}/*終 ウィンドウ幅500px以上、700px未満の場合*/
+
+
+
+
+
+
+
+/*グリッド作成でウィンドウ幅が変わっても変わらないコードを纏めて書く*/
+.g_wrap{
+  display: grid;  /*グリッドレイアウト*/
+  grid-template-columns: repeat(var(--tate_kazu), var(--tate_naiyo)); /*// 横に3つ並べる*//*repeatは(回, 内容)*//*1:1:1の割合で3つグリッドエリアを作る*/
+
+
+  gap: clamp(3rem, 3vmin, 4rem);  /*要素同士の余白を設定
+                                clamp(min, val, max) → 最小値, 推奨値, 最大値(推奨値に当てはまらない場合に最小最大になる)
+                                今回は最小:3文字、推奨:ウィンドウの高さ幅の短い方の長さの3％、最大4文字
+                                vmin:ウィンドウの幅と高さのうち、値が小さいほうに対する割合
+                                (多分スマホみたいに小さい画面の場合、余白が大きすぎてしまうから、小さくなるように設定);
+                                参照：https://tedate.jp/coding/about-font-size-use-clamp-function
+                                */
+  
+  
+  box-sizing: border-box; /*max-widthでmargin以外の全てを含んだ幅指定が出来る(高さ幅指定にpaddingを含める)*/
+                                
+  /* max-inline-size: 130rem; */
+  max-width: 130rem;  /*グリッドの全体枠の最大幅*/
+
+  padding-left: min(5vw, 6.5rem);     /*内部余白(左)：ウィンドウ幅の5％*/
+  padding-right: min(5vw, 6.5rem);    /*内部余白(右)：ウィンドウ幅の5％*/
+
+  margin: 0 auto;   /*外部余白を自動生成して中央揃え(gridのようなブロックレベル要素)*/
+}
+
+
+
+
+
+  /*要素を配置するグリッド位置(基本)*/
+  /* class名::markergrid1を一括でグリッドに配置 */
+  /* 3✕2のグリッドの左上から右上、左下から右下まで要素(A～E)を順番に自動で配置する */
+  .grid1{
+    /* -- を付けると変数として扱うことが出来る var(変数名)で呼び出す*/
+    --grid-column-start: auto;  /*要素描写開始位置(X軸)を指定 autoと指定すると左上を起点に他のグリッド領域に重ならないように自動的に開始位置を決めてくれる グリッド線の番号は左上から1, 2, 3, ... と自動的に割り振られる X軸方向にグリッドを3つ作成したら、4本のグリッド線が出来る*/
+    --grid-column-end: span 1;  /*要素描写開始位置(X軸)のグリッドスパン(セル)を指定 グリッドセル何個分をグリッド領域とするか 1なら1セル分*/
+    --grid-row-start: auto;     /*上で説明したY軸版*/
+    --grid-row-end: span 1;     /*上で説明したY軸版*/
+  }
+
+
+
+
+/*要素をグリッドに配置*/
+/*class名指定*/
+.grid1{
+  /*上記で設定した変数値を反映、更新する*/
+  /*要素の描写エリアを変更したい時に、変数の値を書き換えることで簡単に変更することが出来る*/
+  /*grid-column:開始位置/終了位置(又はスパン) というように設定する*/
+  grid-column: var(--grid-column-start)/var(--grid-column-end);
+  grid-row: var(--grid-row-start)/var(--grid-row-end);
+}
+/*class名指定*/
+/*要素全てに色を付ける*/
+.grid1{
+  background-color: rgb(255, 255, 255); /*背景色*/
+}
+
+
+
+
